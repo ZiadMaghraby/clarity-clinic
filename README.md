@@ -1,6 +1,8 @@
 # Clarity Clinic
 ### A calmer workspace for everyday care.
 
+Canonical repository: [ZiadMaghraby/clarity-clinic](https://github.com/ZiadMaghraby/clarity-clinic). This independently maintained repository preserves the original project history and contributor attribution. The previous [development fork](https://github.com/ZiadMaghraby/clinic_system) remains available for reference.
+
 A bilingual general-clinic application built with Laravel 12, PHP, Blade and a lightweight responsive interface. Arabic includes RTL navigation and forms. English and Arabic can be switched without leaving the current page.
 
 This release replaces the original separate dashboards with a shared workspace governed by role and record ownership. It is ready for **staging evaluation**. A real launch still requires hosting, SMTP, operational policies and the checks in [Deployment](docs/DEPLOYMENT.md).
