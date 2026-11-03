@@ -82,3 +82,17 @@ test('staff identities and future birth dates cannot be edited through patient e
     $this->patch(route('patients.update', $this->admin), ['name' => 'Tampered', 'phone' => '123'])->assertNotFound();
     $this->patch(route('patients.update', $this->patient), ['name' => 'Name', 'phone' => '123', 'date_of_birth' => '2027-01-01'])->assertSessionHasErrors('date_of_birth');
 });
+
+test('CSV exports neutralize formulas after whitespace and byte order marks', function ($currency) {
+    config(['clinic.currency' => $currency]);
+    $csv = $this->actingAs($this->admin)->get('/reports/export?from=2026-10-01&to=2026-10-31')->assertOk()->streamedContent();
+    $stream = fopen('php://memory', 'r+');
+    fwrite($stream, $csv);
+    rewind($stream);
+    $rows = [];
+    while (($row = fgetcsv($stream, 0, ',', '"', '')) !== false) {
+        $rows[] = $row;
+    }
+    fclose($stream);
+    expect($rows[6][2])->toBe("'".$currency);
+})->with([' =1+1', "\xEF\xBB\xBF=1+1", "\n=1+1", '  +1+1', "\u{FF1D}1+1"]);

@@ -36,7 +36,7 @@ class ReportsController extends Controller
                 ['Outstanding for visits in range', $data['outstanding'], config('clinic.currency')],
             ] as $row) {
                 // Protect spreadsheet consumers even if an operator configures a formula-like currency.
-                $row = array_map(fn ($value) => preg_match('/^[=+@\-\t\r\n]/', (string) $value) ? "'".$value : $value, $row);
+                $row = array_map(fn ($value) => preg_match('/^(?:[\t\r\n]|[\s\x{FEFF}]*[=+@\-＝＋－＠])/u', (string) $value) ? "'".$value : $value, $row);
                 fputcsv($stream, $row, ',', '"', '');
             }
             fclose($stream);
