@@ -90,7 +90,9 @@ test('CSV exports neutralize formulas after whitespace and byte order marks', fu
     fwrite($stream, $csv);
     rewind($stream);
     $rows = [];
-    while (($row = fgetcsv($stream, 0, ',', '"', '')) !== false) $rows[] = $row;
+    while (($row = fgetcsv($stream, 0, ',', '"', '')) !== false) {
+        $rows[] = $row;
+    }
     fclose($stream);
     expect($rows[6][2])->toBe("'".$currency);
-})->with([" =1+1", "\xEF\xBB\xBF=1+1", "\n=1+1", "  +1+1", "\u{FF1D}1+1"]);
+})->with([' =1+1', "\xEF\xBB\xBF=1+1", "\n=1+1", '  +1+1', "\u{FF1D}1+1"]);
